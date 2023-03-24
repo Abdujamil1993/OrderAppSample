@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Order>
+
+@{
+    ViewBag.Title = "Order List";
+}
+
+<h2>Order List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<form asp-controller="Home" asp-action="Index" method="get">
+    <p>
+        Start: <input class="datefield" data-val="true" data-val-required="Date is required"
+                      id="StartDate" name="StartDate" type="date" value=@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd") />
+        End: <input class="datefield" data-val="true" data-val-required="Date is required"
+                    id="EndDate" name="EndDate" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+
+        Order Number: <input type="text" name="Search" />
+        Provider Name: <input type="text" name="ProviderName" />
+        Order Item Name: <input type="text" name="OrderItemSearch" />
+        Order Item Unit: <select name="OrderItemUnit">
+            <option value=""></option>
+            @foreach (var item in ViewBag.Units)
+            {
+               
+              <option value="@item">@item</option>
+                
+            }
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProviderId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProviderId)
+            </td>
+            <td>
+                @Html.ActionLink("Order Items", "Index", "OrderItems", new { orderId = item.Id }, null)
+                @*@Html.ActionLink("Details", "Details", new { id = item.CustomerID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CustomerID })*@
+            </td>
+        </tr>
+    }
+
+</table>
